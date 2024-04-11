@@ -1,5 +1,6 @@
 package com.blog.app.one.controller;
 
+import com.blog.app.one.dto.PostDto;
 import com.blog.app.one.entity.Post;
 import com.blog.app.one.service.PostService;
 import lombok.AllArgsConstructor;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
     private PostService postService;
     @PostMapping("/create")
-    public ResponseEntity<Post> createPost(@RequestBody Post post){
-        Post savedPost=postService.createPost(post);
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto post){
+        PostDto savedPost=postService.createPost(post);
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
 }

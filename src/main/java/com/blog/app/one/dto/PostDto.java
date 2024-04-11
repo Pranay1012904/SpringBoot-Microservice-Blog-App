@@ -1,24 +1,12 @@
-package com.blog.app.one.entity;
+package com.blog.app.one.dto;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "Posts", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostDto {
     private Long id;
-    @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
     private String description;
-    @Column(nullable = false)
     private String content;
 
     public Long getId() {
