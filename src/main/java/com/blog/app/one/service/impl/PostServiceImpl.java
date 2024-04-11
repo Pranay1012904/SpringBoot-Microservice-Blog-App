@@ -9,6 +9,9 @@ import com.blog.app.one.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -20,6 +23,11 @@ public class PostServiceImpl implements PostService {
         Post post= dToEMapper.dtoToEntity(postDto);
         Post savedPost=postRepository.save(post);
         return entityToDTOMapper.dtoToEntity(savedPost);
+    }
+
+    public List<PostDto> getAllPosts(){
+       List<Post> allPosts= postRepository.findAll();
+        return allPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
     }
 
 
