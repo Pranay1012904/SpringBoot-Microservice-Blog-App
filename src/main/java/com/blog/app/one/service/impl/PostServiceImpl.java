@@ -2,6 +2,7 @@ package com.blog.app.one.service.impl;
 
 import com.blog.app.one.dto.PostDto;
 import com.blog.app.one.entity.Post;
+import com.blog.app.one.exception.ResourceNotFoundException;
 import com.blog.app.one.mapstruct.DtoToEntityMapper;
 import com.blog.app.one.mapstruct.EntityToDTOMapper;
 import com.blog.app.one.repository.PostRepository;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,11 +26,16 @@ public class PostServiceImpl implements PostService {
         Post savedPost=postRepository.save(post);
         return entityToDTOMapper.dtoToEntity(savedPost);
     }
-
+    @Override
     public List<PostDto> getAllPosts(){
        List<Post> allPosts= postRepository.findAll();
         return allPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
     }
+    @Override
+    public PostDto findPostById(Long id){
+       Post fetchedPost= postRepository.findPostById(id).orElseThrow(()-> new ResourceNotFoundException("POST","ID",id.toString()));
+        return entityToDTOMapper.dtoToEntity(fetchedPost);
 
+    }
 
 }
