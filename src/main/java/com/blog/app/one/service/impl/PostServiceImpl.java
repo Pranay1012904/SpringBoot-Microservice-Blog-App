@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,10 +35,10 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public PostPaginationResponse getAllPosts(
-            int pageNo, int pageSize
+            int pageNo, int pageSize, String sortBy
     ){
         //create pageable instance
-        Pageable pageable= PageRequest.of(pageNo, pageSize);
+        Pageable pageable= PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Post> allPosts= postRepository.findAll(pageable);
         List<Post> listOfPosts=allPosts.getContent();
         List<PostDto> content= listOfPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());

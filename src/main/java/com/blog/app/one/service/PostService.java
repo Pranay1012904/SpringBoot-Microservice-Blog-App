@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface PostService {
     public PostDto createPost(PostDto post);
-    public PostPaginationResponse getAllPosts(int pageNo, int PageSize);
+    public PostPaginationResponse getAllPosts(int pageNo, int PageSize, String sortBy);
     public PostDto findPostById(Long id);
 }
