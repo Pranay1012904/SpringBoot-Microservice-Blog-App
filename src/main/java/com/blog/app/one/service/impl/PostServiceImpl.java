@@ -8,7 +8,12 @@ import com.blog.app.one.mapstruct.EntityToDTOMapper;
 import com.blog.app.one.repository.PostRepository;
 import com.blog.app.one.service.PostService;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +32,14 @@ public class PostServiceImpl implements PostService {
         return entityToDTOMapper.dtoToEntity(savedPost);
     }
     @Override
-    public List<PostDto> getAllPosts(){
-       List<Post> allPosts= postRepository.findAll();
-        return allPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
+    public List<PostDto> getAllPosts(
+            int pageNo, int pageSize
+    ){
+        //create pageable instance
+        Pageable pageable= PageRequest.of(pageNo, pageSize);
+        Page<Post> allPosts= postRepository.findAll(pageable);
+        List<Post> listOfPosts=allPosts.getContent();
+        return listOfPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
     }
     @Override
     public PostDto findPostById(Long id){
