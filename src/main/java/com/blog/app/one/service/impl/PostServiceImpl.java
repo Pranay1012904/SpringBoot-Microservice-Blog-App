@@ -1,6 +1,7 @@
 package com.blog.app.one.service.impl;
 
 import com.blog.app.one.dto.PostDto;
+import com.blog.app.one.dto.PostPaginationResponse;
 import com.blog.app.one.entity.Post;
 import com.blog.app.one.exception.ResourceNotFoundException;
 import com.blog.app.one.mapstruct.DtoToEntityMapper;
@@ -32,14 +33,22 @@ public class PostServiceImpl implements PostService {
         return entityToDTOMapper.dtoToEntity(savedPost);
     }
     @Override
-    public List<PostDto> getAllPosts(
+    public PostPaginationResponse getAllPosts(
             int pageNo, int pageSize
     ){
         //create pageable instance
         Pageable pageable= PageRequest.of(pageNo, pageSize);
         Page<Post> allPosts= postRepository.findAll(pageable);
         List<Post> listOfPosts=allPosts.getContent();
-        return listOfPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
+        List<PostDto> content= listOfPosts.stream().map(post-> entityToDTOMapper.dtoToEntity(post)).collect(Collectors.toList());
+        PostPaginationResponse paginationResponse=new PostPaginationResponse();
+        paginationResponse.setContent(content);
+        paginationResponse.setPageNo(allPosts.getNumber());
+        paginationResponse.setPageSize(allPosts.getSize());
+        paginationResponse.setTotalElements(allPosts.getTotalElements());
+        paginationResponse.setTotalPages(allPosts.getTotalPages());
+        paginationResponse.setLast(allPosts.isLast());
+        return paginationResponse;
     }
     @Override
     public PostDto findPostById(Long id){

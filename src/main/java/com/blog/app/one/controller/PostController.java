@@ -1,6 +1,7 @@
 package com.blog.app.one.controller;
 
 import com.blog.app.one.dto.PostDto;
+import com.blog.app.one.dto.PostPaginationResponse;
 import com.blog.app.one.entity.Post;
 import com.blog.app.one.service.PostService;
 import lombok.AllArgsConstructor;
@@ -21,11 +22,11 @@ public class PostController {
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
     @GetMapping("/get/allPosts")
-    public ResponseEntity<List<PostDto>> getAllPost(
+    public ResponseEntity<PostPaginationResponse> getAllPost(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value="pageSize", defaultValue = "10", required = false) int pageSize
     ){
-       List<PostDto> allPosts= postService.getAllPosts(pageNo, pageSize);
+        PostPaginationResponse allPosts= postService.getAllPosts(pageNo, pageSize);
        return new ResponseEntity<>(allPosts,HttpStatus.OK);
     }
     @GetMapping("/get/byId")
