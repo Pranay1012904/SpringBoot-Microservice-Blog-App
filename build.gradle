@@ -35,6 +35,10 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	testImplementation 'junit:junit:4.13.2'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	//Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
